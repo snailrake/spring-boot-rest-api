@@ -1,13 +1,14 @@
-package com.webapp.testapi.song;
+package com.webapp.testapi.api.controller;
 
+import com.webapp.testapi.domain.model.Song;
+import com.webapp.testapi.api.dto.SongDTO;
+import com.webapp.testapi.service.SongService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @RestController
 @RequestMapping("/songs")

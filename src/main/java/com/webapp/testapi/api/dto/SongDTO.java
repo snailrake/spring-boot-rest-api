@@ -1,22 +1,24 @@
-package com.webapp.testapi.artist;
+package com.webapp.testapi.api.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ArtistDTO {
+public class SongDTO {
 
     private String name;
 
-    private String hometown;
+    private int duration;
 
-    private String birthDate;
+    private int size;
+
+    private Long artistId;
+
+    private Long formatId;
 
 }

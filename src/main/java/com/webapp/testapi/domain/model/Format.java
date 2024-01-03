@@ -1,9 +1,6 @@
-package com.webapp.testapi.format;
+package com.webapp.testapi.domain.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,10 +8,13 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@Table(name = "formats")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Format {
+
+    // TODO: Переделать в enum с пятью самыми популярными форматами
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,9 +1,10 @@
-package com.webapp.testapi.song;
+package com.webapp.testapi.service;
 
-import com.webapp.testapi.artist.ArtistService;
-import com.webapp.testapi.format.FormatService;
+import com.webapp.testapi.domain.model.Song;
+import com.webapp.testapi.domain.repository.SongRepository;
+import com.webapp.testapi.api.dto.SongDTO;
+import com.webapp.testapi.service.impl.ArtistServiceImpl;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public class SongService {
 
     private final FormatService formatService;
 
-    private final ArtistService artistService;
+    private final ArtistServiceImpl artistService;
 
     public List<Song> readAll() {
         return songRepository.findAll();

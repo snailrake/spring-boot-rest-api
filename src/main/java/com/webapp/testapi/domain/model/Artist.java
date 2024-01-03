@@ -1,6 +1,5 @@
-package com.webapp.testapi.artist;
+package com.webapp.testapi.domain.model;
 
-import com.webapp.testapi.song.Song;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,11 +7,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Data
+@Table(name = "artists")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

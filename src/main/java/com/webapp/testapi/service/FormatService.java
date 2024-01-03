@@ -1,5 +1,7 @@
-package com.webapp.testapi.format;
+package com.webapp.testapi.service;
 
+import com.webapp.testapi.domain.model.Format;
+import com.webapp.testapi.domain.repository.FormatRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

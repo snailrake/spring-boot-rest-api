@@ -1,19 +1,17 @@
-package com.webapp.testapi.song;
+package com.webapp.testapi.domain.model;
 
 
-import com.webapp.testapi.artist.Artist;
-import com.webapp.testapi.format.Format;
+import com.webapp.testapi.domain.model.Artist;
+import com.webapp.testapi.domain.model.Format;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Entity
 @Data
+@Table(name = "songs")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
