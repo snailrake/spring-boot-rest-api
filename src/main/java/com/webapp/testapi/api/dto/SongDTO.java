@@ -19,6 +19,6 @@ public class SongDTO {
 
     private Long artistId;
 
-    private Long formatId;
+    private String format;
 
 }

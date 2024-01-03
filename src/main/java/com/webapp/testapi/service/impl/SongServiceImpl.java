@@ -1,9 +1,10 @@
-package com.webapp.testapi.service;
+package com.webapp.testapi.service.impl;
 
 import com.webapp.testapi.domain.model.Format;
 import com.webapp.testapi.domain.model.Song;
 import com.webapp.testapi.domain.repository.SongRepository;
 import com.webapp.testapi.api.dto.SongDTO;
+import com.webapp.testapi.service.SongService;
 import com.webapp.testapi.service.impl.ArtistServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class SongService {
+public class SongServiceImpl implements SongService {
 
     private final SongRepository songRepository;
 
@@ -26,13 +27,13 @@ public class SongService {
         return songRepository.findByArtistId(id);
     }
 
-    public Song create(SongDTO dto) {
+    public Song create(Song song) {
         return songRepository.save(Song.builder()
-                        .name(dto.getName())
-                        .duration(dto.getDuration())
-                        .size(dto.getSize())
-                        .format(Format.valueOf(dto.getFormat()))
-                        .artist(artistService.findById(dto.getArtistId()))
+                        .name(song.getName())
+                        .duration(song.getDuration())
+                        .size(song.getSize())
+                        .format(song.getFormat())
+                        .artist(song.getArtist())
                 .build());
     }
 

@@ -1,8 +1,10 @@
 package com.webapp.testapi.api.controller;
 
-import com.webapp.testapi.domain.model.Song;
 import com.webapp.testapi.api.dto.SongDTO;
-import com.webapp.testapi.service.SongService;
+import com.webapp.testapi.domain.model.Format;
+import com.webapp.testapi.domain.model.Song;
+import com.webapp.testapi.service.impl.ArtistServiceImpl;
+import com.webapp.testapi.service.impl.SongServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +17,9 @@ import java.util.List;
 @AllArgsConstructor
 public class SongController {
 
-    private final SongService songService;
+    private final SongServiceImpl songService;
+
+    private final ArtistServiceImpl artistService;
 
     @GetMapping("/find/{id}")
     public ResponseEntity<List<Song>> readById(@PathVariable Long id) {
@@ -35,13 +39,23 @@ public class SongController {
 
     @PostMapping
     public ResponseEntity<Song> create(@RequestBody SongDTO dto) {
-        return new ResponseEntity<>(songService.create(dto), HttpStatus.OK);
+        return new ResponseEntity<>(songService.create(dtoToEntity(dto)), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
         songService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private Song dtoToEntity(SongDTO dto) {
+        return Song.builder()
+                .name(dto.getName())
+                .duration(dto.getDuration())
+                .size(dto.getSize())
+                .format(Format.valueOf(dto.getFormat()))
+                .artist(artistService.findById(dto.getArtistId()))
+                .build();
     }
 
 }

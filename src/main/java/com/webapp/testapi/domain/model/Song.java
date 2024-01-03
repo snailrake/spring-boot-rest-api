@@ -1,8 +1,6 @@
 package com.webapp.testapi.domain.model;
 
 
-import com.webapp.testapi.domain.model.Artist;
-import com.webapp.testapi.domain.model.Format;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,8 +25,7 @@ public class Song {
 
     private int size;
 
-    @ManyToOne
-    @JoinColumn(name = "format_id")
+    @Enumerated(EnumType.STRING)
     private Format format;
 
     @ManyToOne
