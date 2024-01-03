@@ -1,5 +1,6 @@
 package com.webapp.testapi.service;
 
+import com.webapp.testapi.domain.model.Format;
 import com.webapp.testapi.domain.model.Song;
 import com.webapp.testapi.domain.repository.SongRepository;
 import com.webapp.testapi.api.dto.SongDTO;
@@ -14,8 +15,6 @@ import java.util.List;
 public class SongService {
 
     private final SongRepository songRepository;
-
-    private final FormatService formatService;
 
     private final ArtistServiceImpl artistService;
 
@@ -32,7 +31,7 @@ public class SongService {
                         .name(dto.getName())
                         .duration(dto.getDuration())
                         .size(dto.getSize())
-                        .format(formatService.findById(dto.getFormatId()))
+                        .format(Format.valueOf(dto.getFormat()))
                         .artist(artistService.findById(dto.getArtistId()))
                 .build());
     }
