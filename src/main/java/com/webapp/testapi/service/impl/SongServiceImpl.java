@@ -7,6 +7,8 @@ import com.webapp.testapi.api.dto.SongDTO;
 import com.webapp.testapi.service.SongService;
 import com.webapp.testapi.service.impl.ArtistServiceImpl;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,8 +21,9 @@ public class SongServiceImpl implements SongService {
 
     private final ArtistServiceImpl artistService;
 
-    public List<Song> readAll() {
-        return songRepository.findAll();
+    public List<Song> readAll(PageRequest pageRequest) {
+        Page<Song> page = songRepository.findAll(pageRequest);
+        return page.getContent();
     }
 
     public List<Song> readByArtistId(Long id) {

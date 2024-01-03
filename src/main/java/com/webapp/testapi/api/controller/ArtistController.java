@@ -5,6 +5,7 @@ import com.webapp.testapi.api.dto.ArtistDTO;
 import com.webapp.testapi.service.impl.ArtistServiceImpl;
 import com.webapp.testapi.domain.model.Artist;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +22,11 @@ public class ArtistController {
     private final ArtistServiceImpl artistService;
 
     @GetMapping
-    public List<ArtistDTO> readAll() {
-        return artistService.readAll().stream()
+    public List<ArtistDTO> readAll(
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "10") int size
+    ) {
+        return artistService.readAll(PageRequest.of(page, size)).stream()
                 .map(this::entityToDto)
                 .collect(Collectors.toList());
     }
@@ -46,6 +50,7 @@ public class ArtistController {
 
     private Artist dtoToEntity(ArtistDTO dto) {
         return Artist.builder()
+                .id(dto.getId())
                 .name(dto.getName())
                 .hometown(dto.getHometown())
                 .birthDate(LocalDate.parse(dto.getBirthDate()))
@@ -53,11 +58,10 @@ public class ArtistController {
     }
     private ArtistDTO entityToDto(Artist artist) {
         return ArtistDTO.builder()
+                .id(artist.getId())
                 .name(artist.getName())
                 .hometown(artist.getHometown())
                 .birthDate(artist.getBirthDate().toString())
                 .build();
     }
-
-
 }

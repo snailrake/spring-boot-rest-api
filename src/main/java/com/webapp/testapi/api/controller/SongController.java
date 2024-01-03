@@ -6,6 +6,7 @@ import com.webapp.testapi.domain.model.Song;
 import com.webapp.testapi.service.impl.ArtistServiceImpl;
 import com.webapp.testapi.service.impl.SongServiceImpl;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +31,11 @@ public class SongController {
     }
 
     @GetMapping
-    public List<SongDTO> readAll() {
-        return songService.readAll().stream()
+    public List<SongDTO> readAll(
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "10") int size
+    ) {
+        return songService.readAll(PageRequest.of(page, size)).stream()
                 .map(this::entityToDto)
                 .collect(Collectors.toList());
     }
@@ -55,6 +59,7 @@ public class SongController {
 
     private Song dtoToEntity(SongDTO dto) {
         return Song.builder()
+                .id(dto.getId())
                 .name(dto.getName())
                 .duration(dto.getDuration())
                 .size(dto.getSize())
@@ -65,6 +70,7 @@ public class SongController {
 
     private SongDTO entityToDto(Song song) {
         return SongDTO.builder()
+                .id(song.getId())
                 .name(song.getName())
                 .duration(song.getDuration())
                 .size(song.getSize())

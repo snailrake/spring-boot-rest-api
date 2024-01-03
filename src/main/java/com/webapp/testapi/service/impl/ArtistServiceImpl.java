@@ -1,15 +1,15 @@
 package com.webapp.testapi.service.impl;
 
-import com.webapp.testapi.api.dto.ArtistDTO;
 import com.webapp.testapi.api.exception.ArtistNotFoundException;
 import com.webapp.testapi.api.exception.ArtistValidateException;
 import com.webapp.testapi.domain.model.Artist;
 import com.webapp.testapi.domain.repository.ArtistRepository;
 import com.webapp.testapi.service.ArtistService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -23,9 +23,9 @@ public class ArtistServiceImpl implements ArtistService {
                 .orElseThrow(() -> new ArtistNotFoundException(id));
     }
 
-    public List<Artist> readAll() {
-        // TODO: доставание по частям (pageble)
-        return artistRepository.findAll();
+    public List<Artist> readAll(PageRequest pageRequest) {
+        Page<Artist> page = artistRepository.findAll(pageRequest);
+        return page.getContent();
     }
 
     public Artist create(Artist artist) {
