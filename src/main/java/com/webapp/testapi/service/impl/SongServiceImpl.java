@@ -1,5 +1,7 @@
 package com.webapp.testapi.service.impl;
 
+import com.webapp.testapi.api.exception.SongNotFoundException;
+import com.webapp.testapi.api.exception.SongValidateException;
 import com.webapp.testapi.domain.model.Format;
 import com.webapp.testapi.domain.model.Song;
 import com.webapp.testapi.domain.repository.SongRepository;
@@ -31,6 +33,7 @@ public class SongServiceImpl implements SongService {
     }
 
     public Song create(Song song) {
+        validateSong(song);
         return songRepository.save(Song.builder()
                         .name(song.getName())
                         .duration(song.getDuration())
@@ -41,11 +44,21 @@ public class SongServiceImpl implements SongService {
     }
 
     public Song update(Song song) {
+        if(!songRepository.existsById(song.getId())) {
+            throw new SongNotFoundException(song.getId());
+        }
+        validateSong(song);
         return songRepository.save(song);
     }
 
     public void delete(Long id) {
         songRepository.deleteById(id);
+    }
+
+    private void validateSong(Song song) {
+        if (song.getName() == null || song.getName().isEmpty() || song.getName().length() > 50) {
+            throw new SongValidateException();
+        }
     }
 
 }
