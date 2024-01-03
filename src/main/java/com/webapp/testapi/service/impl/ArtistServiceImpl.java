@@ -2,6 +2,7 @@ package com.webapp.testapi.service.impl;
 
 import com.webapp.testapi.api.dto.ArtistDTO;
 import com.webapp.testapi.api.exception.ArtistNotFoundException;
+import com.webapp.testapi.api.exception.ArtistValidateException;
 import com.webapp.testapi.domain.model.Artist;
 import com.webapp.testapi.domain.repository.ArtistRepository;
 import com.webapp.testapi.service.ArtistService;
@@ -50,8 +51,7 @@ public class ArtistServiceImpl implements ArtistService {
 
     private void validateArtist(Artist artist) {
         if (artist.getName() == null || artist.getName().isEmpty() || artist.getName().length() > 50) {
-            // TODO: runtime exception поменять на кастомный
-            throw new RuntimeException("Artist name length can be from 0 to 50 symbols");
+            throw new ArtistValidateException();
         }
     }
 

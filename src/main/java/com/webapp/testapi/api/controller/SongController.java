@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/songs")
@@ -22,30 +23,34 @@ public class SongController {
     private final ArtistServiceImpl artistService;
 
     @GetMapping("/find/{id}")
-    public ResponseEntity<List<Song>> readById(@PathVariable Long id) {
-        return new ResponseEntity<>(songService.readByArtistId(id), HttpStatus.OK);
+    public List<SongDTO> readByArtistId(@PathVariable Long id) {
+        return songService.readByArtistId(id).stream()
+                .map(this::entityToDto)
+                .collect(Collectors.toList());
     }
 
     @GetMapping
-    public ResponseEntity<List<Song>> readAll() {
-        List<Song> songs = songService.readAll();
-        return new ResponseEntity<>(songs, HttpStatus.OK);
+    public List<SongDTO> readAll() {
+        return songService.readAll().stream()
+                .map(this::entityToDto)
+                .collect(Collectors.toList());
     }
 
-    @PutMapping
-    public ResponseEntity<Song> update(@RequestBody Song song) {
-        return new ResponseEntity<>(songService.update(song), HttpStatus.OK);
+    @PutMapping("/{id}")
+    public SongDTO update(@RequestBody SongDTO songDTO, @PathVariable Long id) {
+        songDTO.setId(id);
+        return entityToDto(songService.update(dtoToEntity(songDTO)));
     }
 
     @PostMapping
-    public ResponseEntity<Song> create(@RequestBody SongDTO dto) {
-        return new ResponseEntity<>(songService.create(dtoToEntity(dto)), HttpStatus.OK);
+    public ResponseEntity<SongDTO> create(@RequestBody SongDTO dto) {
+        SongDTO result = entityToDto(songService.create(dtoToEntity(dto)));
+        return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
+    public void delete(@PathVariable Long id) {
         songService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     private Song dtoToEntity(SongDTO dto) {
@@ -55,6 +60,16 @@ public class SongController {
                 .size(dto.getSize())
                 .format(Format.valueOf(dto.getFormat()))
                 .artist(artistService.findById(dto.getArtistId()))
+                .build();
+    }
+
+    private SongDTO entityToDto(Song song) {
+        return SongDTO.builder()
+                .name(song.getName())
+                .duration(song.getDuration())
+                .size(song.getSize())
+                .format(song.getFormat().name())
+                .artistId(song.getArtist().getId())
                 .build();
     }
 
