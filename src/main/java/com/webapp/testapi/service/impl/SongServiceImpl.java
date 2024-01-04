@@ -1,5 +1,6 @@
 package com.webapp.testapi.service.impl;
 
+import com.webapp.testapi.api.exception.ArtistNotFoundException;
 import com.webapp.testapi.api.exception.SongNotFoundException;
 import com.webapp.testapi.api.exception.SongValidateException;
 import com.webapp.testapi.domain.model.Format;
@@ -29,6 +30,9 @@ public class SongServiceImpl implements SongService {
     }
 
     public List<Song> readByArtistId(Long id) {
+        if (artistService.findById(id) == null) {
+            throw new ArtistNotFoundException(id);
+        }
         return songRepository.findByArtistId(id);
     }
 
