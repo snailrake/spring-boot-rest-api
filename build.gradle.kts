@@ -22,6 +22,8 @@ repositories {
 }
 
 dependencies {
+    runtimeOnly("org.flywaydb:flyway-database-postgresql:10.4.1")
+    implementation("org.flywaydb:flyway-core:10.4.1")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
     implementation("org.springframework.boot:spring-boot-starter-validation:3.2.1")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
