@@ -1,5 +1,6 @@
 package com.webapp.testapi.api.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,14 +12,19 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "Artist entity")
 public class ArtistDTO {
 
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
 
+    @Schema(description = "Artist name")
     private String name;
 
+    @Schema(description = "Artist hometown")
     private String hometown;
 
+    @Schema(description = "Artist birthdate")
     private String birthDate;
 
 }
