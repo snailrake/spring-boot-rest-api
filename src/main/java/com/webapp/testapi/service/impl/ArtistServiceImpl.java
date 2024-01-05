@@ -46,6 +46,9 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     public void delete(Long id) {
+        if (!artistRepository.existsById(id)) {
+            throw new ArtistNotFoundException(id);
+        }
         artistRepository.deleteById(id);
     }
 

@@ -1,7 +1,7 @@
 package com.webapp.testapi.api.controller;
 
 import com.webapp.testapi.api.dto.SongDTO;
-import com.webapp.testapi.api.mappers.SongMapper;
+import com.webapp.testapi.api.mapper.SongMapper;
 import com.webapp.testapi.service.impl.ArtistServiceImpl;
 import com.webapp.testapi.service.impl.SongServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;

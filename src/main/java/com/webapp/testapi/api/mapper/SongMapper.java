@@ -1,4 +1,4 @@
-package com.webapp.testapi.api.mappers;
+package com.webapp.testapi.api.mapper;
 
 import com.webapp.testapi.api.dto.SongDTO;
 import com.webapp.testapi.domain.model.Song;

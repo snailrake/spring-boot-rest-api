@@ -56,6 +56,9 @@ public class SongServiceImpl implements SongService {
     }
 
     public void delete(Long id) {
+        if(!songRepository.existsById(id)) {
+            throw new SongNotFoundException(id);
+        }
         songRepository.deleteById(id);
     }
 

@@ -2,7 +2,7 @@ package com.webapp.testapi.api.controller;
 
 
 import com.webapp.testapi.api.dto.ArtistDTO;
-import com.webapp.testapi.api.mappers.ArtistMapper;
+import com.webapp.testapi.api.mapper.ArtistMapper;
 import com.webapp.testapi.service.impl.ArtistServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
