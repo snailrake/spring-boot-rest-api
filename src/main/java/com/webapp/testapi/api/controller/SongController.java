@@ -1,8 +1,7 @@
 package com.webapp.testapi.api.controller;
 
 import com.webapp.testapi.api.dto.SongDTO;
-import com.webapp.testapi.domain.model.Format;
-import com.webapp.testapi.domain.model.Song;
+import com.webapp.testapi.api.mappers.SongMapper;
 import com.webapp.testapi.service.impl.ArtistServiceImpl;
 import com.webapp.testapi.service.impl.SongServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,7 +35,7 @@ public class SongController {
     @GetMapping("/find/{id}")
     public List<SongDTO> readByArtistId(@PathVariable @Parameter(description = "Artist id") Long id) {
         return songService.readByArtistId(id).stream()
-                .map(this::entityToDto)
+                .map(SongMapper.INSTANCE::toDTO)
                 .collect(Collectors.toList());
     }
 
@@ -50,7 +49,7 @@ public class SongController {
             @RequestParam(required = false, defaultValue = "10") @Parameter(description = "Count of songs on page") @Min(1) @Max(100) int size
     ) {
         return songService.readAll(PageRequest.of(page, size)).stream()
-                .map(this::entityToDto)
+                .map(SongMapper.INSTANCE::toDTO)
                 .collect(Collectors.toList());
     }
 
@@ -64,7 +63,7 @@ public class SongController {
             @PathVariable @Parameter(description = "Song id") Long id
     ) {
         songDTO.setId(id);
-        return entityToDto(songService.update(dtoToEntity(songDTO)));
+        return SongMapper.INSTANCE.toDTO(songService.update(SongMapper.INSTANCE.toEntity(songDTO)));
     }
 
     @Operation(
@@ -73,7 +72,7 @@ public class SongController {
     )
     @PostMapping
     public ResponseEntity<SongDTO> create(@RequestBody @Parameter(description = "Song parameters") SongDTO dto) {
-        SongDTO result = entityToDto(songService.create(dtoToEntity(dto)));
+        SongDTO result = SongMapper.INSTANCE.toDTO(songService.create(SongMapper.INSTANCE.toEntity(dto)));
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
@@ -84,28 +83,6 @@ public class SongController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable @Parameter(description = "Song id") Long id) {
         songService.delete(id);
-    }
-
-    private Song dtoToEntity(SongDTO dto) {
-        return Song.builder()
-                .id(dto.getId())
-                .name(dto.getName())
-                .duration(dto.getDuration())
-                .size(dto.getSize())
-                .format(Format.valueOf(dto.getFormat()))
-                .artist(artistService.findById(dto.getArtistId()))
-                .build();
-    }
-
-    private SongDTO entityToDto(Song song) {
-        return SongDTO.builder()
-                .id(song.getId())
-                .name(song.getName())
-                .duration(song.getDuration())
-                .size(song.getSize())
-                .format(song.getFormat().name())
-                .artistId(song.getArtist().getId())
-                .build();
     }
 
 }

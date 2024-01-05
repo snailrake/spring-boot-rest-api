@@ -2,8 +2,8 @@ package com.webapp.testapi.api.controller;
 
 
 import com.webapp.testapi.api.dto.ArtistDTO;
+import com.webapp.testapi.api.mappers.ArtistMapper;
 import com.webapp.testapi.service.impl.ArtistServiceImpl;
-import com.webapp.testapi.domain.model.Artist;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,7 +36,7 @@ public class ArtistController {
             @RequestParam(required = false, defaultValue = "10") @Parameter(description = "Count of artists on page") @Min(1) @Max(100) int size
     ) {
         return artistService.readAll(PageRequest.of(page, size)).stream()
-                .map(this::entityToDto)
+                .map(ArtistMapper.INSTANCE::toDTO)
                 .collect(Collectors.toList());
     }
 
@@ -51,7 +50,7 @@ public class ArtistController {
             @PathVariable @Parameter(description = "Artist id") Long id
     ) {
         artistDTO.setId(id);
-        return entityToDto(artistService.update(dtoToEntity(artistDTO)));
+        return ArtistMapper.INSTANCE.toDTO(artistService.update(ArtistMapper.INSTANCE.toEntity(artistDTO)));
     }
 
     @Operation(
@@ -60,7 +59,7 @@ public class ArtistController {
     )
     @PostMapping
     public ResponseEntity<ArtistDTO> create(@RequestBody @Parameter(description = "Artist parameters") ArtistDTO dto) {
-        ArtistDTO result = entityToDto(artistService.create(dtoToEntity(dto)));
+        ArtistDTO result = ArtistMapper.INSTANCE.toDTO(artistService.create(ArtistMapper.INSTANCE.toEntity(dto)));
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
@@ -73,20 +72,4 @@ public class ArtistController {
         artistService.delete(id);
     }
 
-    private Artist dtoToEntity(ArtistDTO dto) {
-        return Artist.builder()
-                .id(dto.getId())
-                .name(dto.getName())
-                .hometown(dto.getHometown())
-                .birthDate(LocalDate.parse(dto.getBirthDate()))
-                .build();
-    }
-    private ArtistDTO entityToDto(Artist artist) {
-        return ArtistDTO.builder()
-                .id(artist.getId())
-                .name(artist.getName())
-                .hometown(artist.getHometown())
-                .birthDate(artist.getBirthDate().toString())
-                .build();
-    }
 }
