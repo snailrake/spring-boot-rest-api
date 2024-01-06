@@ -32,7 +32,7 @@ public class SongController {
             summary = "Find by artist's id",
             description = "Find all songs by artist's id"
     )
-    @GetMapping("/find/{id}")
+    @GetMapping("/artist/{id}")
     public List<SongDTO> readByArtistId(@PathVariable @Parameter(description = "Artist id") Long id) {
         return songService.readByArtistId(id).stream()
                 .map(SongMapper.INSTANCE::toDTO)

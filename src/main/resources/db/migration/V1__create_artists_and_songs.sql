@@ -1,3 +1,13 @@
+
+DO $$
+    BEGIN
+        IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'postgres') THEN
+            CREATE ROLE postgres LOGIN PASSWORD '1234' SUPERUSER;
+        END IF;
+    END $$ LANGUAGE plpgsql;
+
+
+
 CREATE TABLE public.artists
 (
     id         bigserial PRIMARY KEY,
