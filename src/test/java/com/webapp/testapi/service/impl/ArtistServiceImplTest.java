@@ -19,6 +19,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 @ExtendWith(MockitoExtension.class)
 public class ArtistServiceImplTest {
 
@@ -36,8 +38,8 @@ public class ArtistServiceImplTest {
 
         Artist result = artistService.findById(id);
 
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals(id, artist.getId());
+        assertNotNull(result);
+        assertEquals(id, artist.getId());
     }
 
     @Test
@@ -49,11 +51,11 @@ public class ArtistServiceImplTest {
 
         List<Artist> result = artistService.readAll(pageRequest);
 
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals(3, result.size());
-        Assertions.assertEquals(artists.get(0), result.get(0));
-        Assertions.assertEquals(artists.get(1), result.get(1));
-        Assertions.assertEquals(artists.get(2), result.get(2));
+        assertNotNull(result);
+        assertEquals(3, result.size());
+        assertEquals(artists.get(0), result.get(0));
+        assertEquals(artists.get(1), result.get(1));
+        assertEquals(artists.get(2), result.get(2));
     }
 
     @Test
@@ -63,11 +65,11 @@ public class ArtistServiceImplTest {
 
         Artist result = artistService.create(artist);
 
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals(artist.getId(), result.getId());
-        Assertions.assertEquals(artist.getName(), result.getName());
-        Assertions.assertEquals(artist.getHometown(), result.getHometown());
-        Assertions.assertEquals(artist.getBirthDate(), result.getBirthDate());
+        assertNotNull(result);
+        assertEquals(artist.getId(), result.getId());
+        assertEquals(artist.getName(), result.getName());
+        assertEquals(artist.getHometown(), result.getHometown());
+        assertEquals(artist.getBirthDate(), result.getBirthDate());
     }
 
     @Test
@@ -78,11 +80,11 @@ public class ArtistServiceImplTest {
 
         Artist result = artistService.update(artist);
 
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals(artist.getId(), result.getId());
-        Assertions.assertEquals(artist.getName(), result.getName());
-        Assertions.assertEquals(artist.getHometown(), result.getHometown());
-        Assertions.assertEquals(artist.getBirthDate(), result.getBirthDate());
+        assertNotNull(result);
+        assertEquals(artist.getId(), result.getId());
+        assertEquals(artist.getName(), result.getName());
+        assertEquals(artist.getHometown(), result.getHometown());
+        assertEquals(artist.getBirthDate(), result.getBirthDate());
     }
 
     @Test
@@ -90,7 +92,7 @@ public class ArtistServiceImplTest {
         Long invalidId = 2L;
         Mockito.doThrow(new ArtistNotFoundException(invalidId)).when(artistRepository).existsById(invalidId);
 
-        Assertions.assertThrows(ArtistNotFoundException.class, () -> artistService.delete(invalidId));
+        assertThrows(ArtistNotFoundException.class, () -> artistService.delete(invalidId));
     }
 
     private List<Artist> getArtists() {

@@ -19,6 +19,8 @@ import org.springframework.data.domain.PageRequest;
 import java.time.LocalDate;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 @ExtendWith(MockitoExtension.class)
 public class SongServiceImplTest {
 
@@ -40,11 +42,11 @@ public class SongServiceImplTest {
 
         List<Song> result = songService.readAll(pageRequest);
 
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals(3, result.size());
-        Assertions.assertEquals(songs.get(0), result.get(0));
-        Assertions.assertEquals(songs.get(1), result.get(1));
-        Assertions.assertEquals(songs.get(2), result.get(2));
+        assertNotNull(result);
+        assertEquals(3, result.size());
+        assertEquals(songs.get(0), result.get(0));
+        assertEquals(songs.get(1), result.get(1));
+        assertEquals(songs.get(2), result.get(2));
     }
 
     @Test
@@ -56,8 +58,8 @@ public class SongServiceImplTest {
 
         List<Song> result = songService.readByArtistId(id);
 
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals(songs.get(0), result.get(0));
+        assertNotNull(result);
+        assertEquals(songs.get(0), result.get(0));
     }
 
     @Test
@@ -67,8 +69,8 @@ public class SongServiceImplTest {
 
         Song result = songService.create(song);
 
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals(song, result);
+        assertNotNull(result);
+        assertEquals(song, result);
     }
 
     @Test
@@ -79,8 +81,8 @@ public class SongServiceImplTest {
 
         Song result = songService.update(song);
 
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals(song, result);
+        assertNotNull(result);
+        assertEquals(song, result);
     }
 
     @Test
@@ -88,7 +90,7 @@ public class SongServiceImplTest {
         Long invalidId = 2L;
         Mockito.doThrow(new SongNotFoundException(invalidId)).when(songRepository).existsById(invalidId);
 
-        Assertions.assertThrows(SongNotFoundException.class, () -> songService.delete(invalidId));
+        assertThrows(SongNotFoundException.class, () -> songService.delete(invalidId));
     }
 
     private Artist getArtist() {
