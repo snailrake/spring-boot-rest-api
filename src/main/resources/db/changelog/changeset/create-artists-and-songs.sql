@@ -1,14 +1,8 @@
+--liquibase formatted sql
 
-DO $$
-    BEGIN
-        IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'postgres') THEN
-            CREATE ROLE postgres LOGIN PASSWORD '1234' SUPERUSER;
-        END IF;
-    END $$ LANGUAGE plpgsql;
+--changeset Viktor Dyukov:1
 
-
-
-CREATE TABLE public.artists
+CREATE TABLE artists
 (
     id         bigserial PRIMARY KEY,
     birth_date date,
@@ -16,10 +10,7 @@ CREATE TABLE public.artists
     name       varchar(255)
 );
 
-ALTER TABLE public.artists
-    OWNER TO postgres;
-
-CREATE TABLE public.songs
+CREATE TABLE songs
 (
     id        bigserial PRIMARY KEY,
     duration  integer NOT NULL,
@@ -30,6 +21,3 @@ CREATE TABLE public.songs
     name      varchar(255),
     CONSTRAINT artist_id_constraint FOREIGN KEY (artist_id) REFERENCES public.artists
 );
-
-ALTER TABLE public.songs
-    OWNER TO postgres;

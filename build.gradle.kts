@@ -22,11 +22,10 @@ repositories {
 }
 
 dependencies {
+    implementation("org.liquibase:liquibase-core:4.25.1")
     testImplementation("org.springframework.boot:spring-boot-testcontainers:3.2.1")
     testImplementation("org.testcontainers:junit-jupiter:1.19.3")
     testImplementation("org.testcontainers:postgresql:1.19.3")
-    runtimeOnly("org.flywaydb:flyway-database-postgresql:10.4.1")
-    implementation("org.flywaydb:flyway-core:10.4.1")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
     implementation("org.springframework.boot:spring-boot-starter-validation:3.2.1")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
