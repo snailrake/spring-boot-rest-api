@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -18,7 +19,7 @@ public class ArtistServiceImpl implements ArtistService {
 
     private final ArtistRepository artistRepository;
 
-    public Artist findById(Long id) {
+    public Artist findById(UUID id) {
         return artistRepository.findById(id)
                 .orElseThrow(() -> new ArtistNotFoundException(id));
     }
@@ -45,7 +46,7 @@ public class ArtistServiceImpl implements ArtistService {
         return artistRepository.save(artist);
     }
 
-    public void delete(Long id) {
+    public void delete(UUID id) {
         if (!artistRepository.existsById(id)) {
             throw new ArtistNotFoundException(id);
         }

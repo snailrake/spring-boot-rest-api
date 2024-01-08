@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -33,7 +34,7 @@ public class SongController {
             description = "Find all songs by artist's id"
     )
     @GetMapping("/artist/{id}")
-    public List<SongDTO> readByArtistId(@PathVariable @Parameter(description = "Artist id") Long id) {
+    public List<SongDTO> readByArtistId(@PathVariable @Parameter(description = "Artist id") UUID id) {
         return songService.readByArtistId(id).stream()
                 .map(SongMapper.INSTANCE::toDTO)
                 .collect(Collectors.toList());
@@ -60,7 +61,7 @@ public class SongController {
     @PutMapping("/{id}")
     public SongDTO update(
             @RequestBody @Parameter(description = "Song parameters") SongDTO songDTO,
-            @PathVariable @Parameter(description = "Song id") Long id
+            @PathVariable @Parameter(description = "Song id") UUID id
     ) {
         songDTO.setId(id);
         return SongMapper.INSTANCE.toDTO(songService.update(SongMapper.INSTANCE.toEntity(songDTO)));
@@ -81,7 +82,7 @@ public class SongController {
             description = "Delete song by song id"
     )
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable @Parameter(description = "Song id") Long id) {
+    public void delete(@PathVariable @Parameter(description = "Song id") UUID id) {
         songService.delete(id);
     }
 

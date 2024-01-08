@@ -4,7 +4,7 @@
 
 CREATE TABLE artists
 (
-    id         bigserial PRIMARY KEY,
+    id         uuid PRIMARY KEY,
     birth_date date,
     hometown   varchar(255),
     name       varchar(255)
@@ -12,10 +12,10 @@ CREATE TABLE artists
 
 CREATE TABLE songs
 (
-    id        bigserial PRIMARY KEY,
+    id        uuid PRIMARY KEY,
     duration  integer NOT NULL,
     size      integer NOT NULL,
-    artist_id bigint,
+    artist_id uuid,
     format    varchar(255) CONSTRAINT songs_format_check CHECK ((format)::text = ANY
                                                                 ((ARRAY ['MP3'::character varying, 'AAC'::character varying, 'FLAC'::character varying, 'WAV'::character varying, 'OGG_VORBIS'::character varying])::text[])),
     name      varchar(255),

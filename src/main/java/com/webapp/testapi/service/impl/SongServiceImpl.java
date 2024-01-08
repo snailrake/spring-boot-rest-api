@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -29,7 +30,7 @@ public class SongServiceImpl implements SongService {
         return page.getContent();
     }
 
-    public List<Song> readByArtistId(Long id) {
+    public List<Song> readByArtistId(UUID id) {
         if (artistService.findById(id) == null) {
             throw new ArtistNotFoundException(id);
         }
@@ -55,7 +56,7 @@ public class SongServiceImpl implements SongService {
         return songRepository.save(song);
     }
 
-    public void delete(Long id) {
+    public void delete(UUID id) {
         if(!songRepository.existsById(id)) {
             throw new SongNotFoundException(id);
         }

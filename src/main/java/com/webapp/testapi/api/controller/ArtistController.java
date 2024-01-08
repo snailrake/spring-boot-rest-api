@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -47,7 +48,7 @@ public class ArtistController {
     @PutMapping("/{id}")
     public ArtistDTO update(
             @RequestBody @Parameter(description = "Artist parameters") ArtistDTO artistDTO,
-            @PathVariable @Parameter(description = "Artist id") Long id
+            @PathVariable @Parameter(description = "Artist id") UUID id
     ) {
         artistDTO.setId(id);
         return ArtistMapper.INSTANCE.toDTO(artistService.update(ArtistMapper.INSTANCE.toEntity(artistDTO)));
@@ -68,7 +69,7 @@ public class ArtistController {
             description = "Delete artist by artist id"
     )
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable @Parameter(description = "Artist id") Long id) {
+    public void delete(@PathVariable @Parameter(description = "Artist id") UUID id) {
         artistService.delete(id);
     }
 

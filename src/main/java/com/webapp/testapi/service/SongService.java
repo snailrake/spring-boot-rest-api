@@ -7,15 +7,16 @@ import org.hibernate.query.Page;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface SongService {
     List<Song> readAll(PageRequest pageRequest);
 
-    List<Song> readByArtistId(Long id);
+    List<Song> readByArtistId(UUID id);
 
     Song create(Song song);
 
     Song update(Song song);
 
-    void delete(Long id);
+    void delete(UUID id);
 }

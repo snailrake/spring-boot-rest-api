@@ -11,6 +11,8 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.UUID;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -30,7 +32,7 @@ public class SongControllerIT {
 
     @Test
     public void readByArtistId_ReturnSongsByArtistId() throws Exception {
-        Long artistId = 1L;
+        UUID artistId = UUID.fromString("ec7f6150-be8b-428a-a11d-e51f69d1b0a4");
         String expectedSong = getSong();
         mockMvc.perform(MockMvcRequestBuilders.get("/songs/artist/{id}", artistId))
                 .andExpectAll(
@@ -53,7 +55,7 @@ public class SongControllerIT {
 
     @Test
     public void update_ReturnUpdatedSong() throws Exception {
-        Long songId = 1L;
+        UUID songId = UUID.fromString("cfb5453b-9ded-48f1-a87f-0a6da75ad2d7");
         String expectedSong = getUpdatedSong();
         mockMvc.perform(MockMvcRequestBuilders.put("/songs/{id}", songId)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -80,7 +82,7 @@ public class SongControllerIT {
 
     @Test
     public void delete_ReturnIsOkStatus() throws Exception {
-        Long id = 1L;
+        UUID id = UUID.fromString("cfb5453b-9ded-48f1-a87f-0a6da75ad2d7");
         mockMvc.perform(MockMvcRequestBuilders.delete("/songs/{id}", id))
                 .andExpect(status().isOk());
     }
@@ -89,19 +91,19 @@ public class SongControllerIT {
         return """
                 [
                     {
-                        "id":1,
+                        "id":"cfb5453b-9ded-48f1-a87f-0a6da75ad2d7",
                         "name":"Song 1",
                         "duration":180,
                         "size":1024,
-                        "artistId":1,
+                        "artistId":"ec7f6150-be8b-428a-a11d-e51f69d1b0a4",
                         "format":"MP3"
                     },
                     {
-                        "id":2,
+                        "id":"48e22cdd-3ec3-48d0-9327-0e0267f09501",
                         "name":"Song 2",
                         "duration":240,
                         "size":2048,
-                        "artistId":2,
+                        "artistId":"07f1d6a1-6b9b-4ae2-9736-5b35869ba828",
                         "format":"FLAC"
                     }
                 ]
@@ -111,11 +113,11 @@ public class SongControllerIT {
     private String getUpdatedSong() {
         return """
                 {
-                    "id":1,
+                    "id":"cfb5453b-9ded-48f1-a87f-0a6da75ad2d7",
                     "name":"Updated Song",
                     "duration":200,
                     "size":1536,
-                    "artistId":1,
+                    "artistId":"ec7f6150-be8b-428a-a11d-e51f69d1b0a4",
                     "format":"MP3"
                 }
                 """;
@@ -127,7 +129,7 @@ public class SongControllerIT {
                     "name":"New Song",
                     "duration":180,
                     "size":1024,
-                    "artistId":1,
+                    "artistId":"ec7f6150-be8b-428a-a11d-e51f69d1b0a4",
                     "format":"WAV"
                 }
                 """;
@@ -137,11 +139,11 @@ public class SongControllerIT {
         return """
                 [
                     {
-                        "id":1,
+                        "id":"cfb5453b-9ded-48f1-a87f-0a6da75ad2d7",
                         "name":"Song 1",
                         "duration":180,
                         "size":1024,
-                        "artistId":1,
+                        "artistId":"ec7f6150-be8b-428a-a11d-e51f69d1b0a4",
                         "format":"MP3"
                     }
                 ]

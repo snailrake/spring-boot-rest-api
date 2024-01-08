@@ -3,23 +3,23 @@ package com.webapp.testapi.service.impl;
 import com.webapp.testapi.api.exception.ArtistNotFoundException;
 import com.webapp.testapi.domain.model.Artist;
 import com.webapp.testapi.domain.repository.ArtistRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class ArtistServiceImplTest {
@@ -31,90 +31,74 @@ public class ArtistServiceImplTest {
     private ArtistServiceImpl artistService;
 
     @Test
-    public void findById_ReturnArtistById() {
-        Long id = 2L;
-        Artist artist = getArtistWithId();
-        Mockito.when(artistRepository.findById(2L)).thenReturn(Optional.ofNullable(artist));
+    public void findById_ValidArtistId_ReturnArtistById() {
+        Artist artist = getArtist();
+        when(artistRepository.findById(artist.getId())).thenReturn(Optional.ofNullable(artist));
 
-        Artist result = artistService.findById(id);
+        Artist result = artistService.findById(artist.getId());
 
         assertNotNull(result);
-        assertEquals(id, artist.getId());
+        assertEquals(artist, result);
+    }
+
+    @Test
+    public void findById_InvalidArtistId_ThrowArtistNotFoundException() {
+        UUID invalidId = UUID.randomUUID();
+        doThrow(new ArtistNotFoundException(invalidId)).when(artistRepository).findById(invalidId);
+
+        assertThrows(ArtistNotFoundException.class, () -> artistService.findById(invalidId));
     }
 
     @Test
     public void readAll_ReturnAllArtists() {
         List<Artist> artists = getArtists();
-        Page<Artist> artistPage = new PageImpl<>(artists);
-        PageRequest pageRequest = PageRequest.of(0, 3);
-        Mockito.when(artistRepository.findAll(pageRequest)).thenReturn(artistPage);
+        Page<Artist> artistsPage = new PageImpl<>(artists);
+        PageRequest pageRequest = PageRequest.of(0,2);
+        when(artistRepository.findAll(pageRequest)).thenReturn(artistsPage);
 
         List<Artist> result = artistService.readAll(pageRequest);
 
         assertNotNull(result);
-        assertEquals(3, result.size());
-        assertEquals(artists.get(0), result.get(0));
-        assertEquals(artists.get(1), result.get(1));
-        assertEquals(artists.get(2), result.get(2));
+        assertEquals(artists, result);
     }
 
     @Test
     public void create_ReturnSavedArtist() {
         Artist artist = getArtist();
-        Mockito.when(artistRepository.save(artist)).thenReturn(artist);
+        when(artistRepository.save(artist)).thenReturn(artist);
 
         Artist result = artistService.create(artist);
 
         assertNotNull(result);
-        assertEquals(artist.getId(), result.getId());
-        assertEquals(artist.getName(), result.getName());
-        assertEquals(artist.getHometown(), result.getHometown());
-        assertEquals(artist.getBirthDate(), result.getBirthDate());
+        assertEquals(artist, result);
     }
 
     @Test
-    public void update_ReturnUpdatedArtist() {
-        Artist artist = getArtistWithId();
-        Mockito.when(artistRepository.existsById(artist.getId())).thenReturn(true);
-        Mockito.when(artistRepository.save(artist)).thenReturn(artist);
+    public void update_validArtistId_ReturnUpdatedArtist() {
+        Artist artist = getArtist();
+        when(artistRepository.existsById(artist.getId())).thenReturn(true);
+        when(artistRepository.save(artist)).thenReturn(artist);
 
         Artist result = artistService.update(artist);
 
         assertNotNull(result);
-        assertEquals(artist.getId(), result.getId());
-        assertEquals(artist.getName(), result.getName());
-        assertEquals(artist.getHometown(), result.getHometown());
-        assertEquals(artist.getBirthDate(), result.getBirthDate());
+        assertEquals(artist, result);
+    }
+
+    @Test
+    public void update_InvalidArtistId_ThrowArtistNotFoundException() {
+        Artist artist = getArtist();
+        doThrow(new ArtistNotFoundException(artist.getId())).when(artistRepository).existsById(artist.getId());
+
+        assertThrows(ArtistNotFoundException.class, () -> artistService.update(artist));
     }
 
     @Test
     public void delete_InvalidId_ThrowArtistNotFoundException() {
-        Long invalidId = 2L;
-        Mockito.doThrow(new ArtistNotFoundException(invalidId)).when(artistRepository).existsById(invalidId);
+        UUID invalidId = UUID.randomUUID();
+        doThrow(new ArtistNotFoundException(invalidId)).when(artistRepository).existsById(invalidId);
 
         assertThrows(ArtistNotFoundException.class, () -> artistService.delete(invalidId));
-    }
-
-    private List<Artist> getArtists() {
-        Artist firstArtist = Artist.builder()
-                .id(1L)
-                .name("Jane")
-                .hometown("Alabama")
-                .birthDate(LocalDate.parse("1999-10-12"))
-                .build();
-        Artist secondArtist = Artist.builder()
-                .id(2L)
-                .name("Hook")
-                .hometown("Texas")
-                .birthDate(LocalDate.parse("1996-10-01"))
-                .build();
-        Artist thirdArtist = Artist.builder()
-                .id(3L)
-                .name("Pasha")
-                .hometown("New-York")
-                .birthDate(LocalDate.parse("1987-11-08"))
-                .build();
-        return List.of(firstArtist, secondArtist, thirdArtist);
     }
 
     private Artist getArtist() {
@@ -125,13 +109,19 @@ public class ArtistServiceImplTest {
                 .build();
     }
 
-    private Artist getArtistWithId() {
-        return Artist.builder()
-                .id(2L)
+    private List<Artist> getArtists() {
+        Artist firstArtist = Artist.builder()
+                .id(UUID.randomUUID())
                 .name("Jane")
                 .hometown("Alabama")
                 .birthDate(LocalDate.parse("1999-10-12"))
                 .build();
+        Artist secondArtist = Artist.builder()
+                .id(UUID.randomUUID())
+                .name("Jane")
+                .hometown("Alabama")
+                .birthDate(LocalDate.parse("1999-10-12"))
+                .build();
+        return List.of(firstArtist, secondArtist);
     }
-
 }

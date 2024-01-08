@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -16,7 +17,7 @@ import java.time.LocalDate;
 public class ArtistDTO {
 
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
-    private Long id;
+    private UUID id;
 
     @Schema(description = "Artist name")
     private String name;

@@ -4,9 +4,10 @@ import com.webapp.testapi.domain.model.Artist;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface ArtistService {
-    Artist findById(Long id);
+    Artist findById(UUID id);
 
     List<Artist> readAll(PageRequest pageRequest);
 
@@ -14,5 +15,5 @@ public interface ArtistService {
 
     Artist update(Artist artist);
 
-    void delete(Long id);
+    void delete(UUID id);
 }

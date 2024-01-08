@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -14,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class SongDTO {
 
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
-    private Long id;
+    private UUID id;
 
     @Schema(description = "Song name")
     private String name;
@@ -26,7 +28,7 @@ public class SongDTO {
     private int size;
 
     @Schema(description = "Artist id")
-    private Long artistId;
+    private UUID artistId;
 
     @Schema(description = "Song file format", example = "MP3")
     private String format;
